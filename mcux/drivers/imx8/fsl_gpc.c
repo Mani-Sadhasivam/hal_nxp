@@ -48,7 +48,7 @@ void GPC_Init(GPC_Type *base, uint32_t powerUpSlot, uint32_t powerDownSlot)
     /* Not mask power down request */
     base->MISC |= GPC_MISC_PDN_REQ_MASK_MASK;
     /* Select virtual PGC ack */
-    base->GPC_PGC_ACK_SEL |= kGPC_VirtualPGCPowerUpAck | kGPC_VirtualPGCPowerDownAck;
+    base->GPC_PGC_ACK_SEL |= (uint32_t)kGPC_VirtualPGCPowerUpAck | (uint32_t)kGPC_VirtualPGCPowerDownAck;
     /* Slot configurations */
 #if !(defined(GPC_SLT_CFG_PU1_COUNT) && GPC_SLT_CFG_PU1_COUNT)
     base->SLT_CFG_PU[powerDownSlot] |= GPC_SLT_CFG_PU_PDN_SLOT_CONTROL_MASK;
@@ -79,7 +79,7 @@ void GPC_EnableIRQ(GPC_Type *base, uint32_t irqId)
 
     assert(irqRegNum < GPC_IMR_COUNT);
 
-    base->GPC_IMR[irqRegNum] &= ~(1U << irqRegShiftNum);
+    base->GPC_IMR[irqRegNum] &= ~(1UL << irqRegShiftNum);
 }
 
 /*!
@@ -95,7 +95,7 @@ void GPC_DisableIRQ(GPC_Type *base, uint32_t irqId)
 
     assert(irqRegNum < GPC_IMR_COUNT);
 
-    base->GPC_IMR[irqRegNum] |= (1U << irqRegShiftNum);
+    base->GPC_IMR[irqRegNum] |= (1UL << irqRegShiftNum);
 }
 
 /*!
@@ -113,9 +113,9 @@ bool GPC_GetIRQStatusFlag(GPC_Type *base, uint32_t irqId)
 
     assert(isrRegNum < GPC_IMR_COUNT);
 
-    ret = base->GPC_ISR[isrRegNum] & (1U << isrRegShiftNum);
+    ret = base->GPC_ISR[isrRegNum] & (1UL << isrRegShiftNum);
 
-    return (1U << isrRegShiftNum) == ret;
+    return (1UL << isrRegShiftNum) == ret;
 }
 
 /*!
@@ -132,18 +132,18 @@ void GPC_EnterWaitMode(GPC_Type *base, gpc_lpm_config_t *config)
     if (config != NULL)
     {
         lpcr &= ~(GPC_LPCR_CPU_CLK_ON_LPM_MASK | GPC_LPCR_EN_PUP_MASK | GPC_LPCR_EN_PDN_MASK);
-        lpcr |= (config->enCpuClk ? GPC_LPCR_CPU_CLK_ON_LPM_MASK : 0U) |
-                (config->enVirtualPGCPowerup ? GPC_LPCR_EN_PUP_MASK : 0U) |
-                (config->enVirtualPGCPowerdown ? GPC_LPCR_EN_PDN_MASK : 0U) |
-                (config->enWfiMask ? GPC_LPCR_MASK_WFI_MASK : 0U) |
-                (config->enDsmMask ? GPC_LPCR_MASK_DSM_TRIGGER_MASK : 0U);
+        lpcr |= (config->enCpuClk ? (uint32_t)GPC_LPCR_CPU_CLK_ON_LPM_MASK : 0UL) |
+                (config->enVirtualPGCPowerup ? (uint32_t)GPC_LPCR_EN_PUP_MASK : 0UL) |
+                (config->enVirtualPGCPowerdown ? (uint32_t)GPC_LPCR_EN_PDN_MASK : 0UL) |
+                (config->enWfiMask ? (uint32_t)GPC_LPCR_MASK_WFI_MASK : 0UL) |
+                (config->enDsmMask ? (uint32_t)GPC_LPCR_MASK_DSM_TRIGGER_MASK : 0UL);
         slpcr &= ~GPC_SLPCR_EN_FASTWUP_WAIT_MODE_MASK;
         slpcr |= config->enFastWakeUp ? GPC_SLPCR_EN_FASTWUP_WAIT_MODE_MASK : 0U;
     }
 
     base->SLPCR = slpcr;
     /* WAIT mode */
-    base->GPC_LPCR = lpcr | kGPC_WaitMode;
+    base->GPC_LPCR = lpcr | (uint32_t)kGPC_WaitMode;
 }
 
 /*!
@@ -160,16 +160,16 @@ void GPC_EnterStopMode(GPC_Type *base, gpc_lpm_config_t *config)
     if (config != NULL)
     {
         lpcr &= ~(GPC_LPCR_CPU_CLK_ON_LPM_MASK | GPC_LPCR_EN_PUP_MASK | GPC_LPCR_EN_PDN_MASK);
-        lpcr |= (config->enCpuClk ? GPC_LPCR_CPU_CLK_ON_LPM_MASK : 0U) |
-                (config->enVirtualPGCPowerup ? GPC_LPCR_EN_PUP_MASK : 0U) |
-                (config->enVirtualPGCPowerdown ? GPC_LPCR_EN_PDN_MASK : 0U) |
-                (config->enWfiMask ? GPC_LPCR_MASK_WFI_MASK : 0U) |
-                (config->enDsmMask ? GPC_LPCR_MASK_DSM_TRIGGER_MASK : 0U);
+        lpcr |= (config->enCpuClk ? (uint32_t)GPC_LPCR_CPU_CLK_ON_LPM_MASK : 0UL) |
+                (config->enVirtualPGCPowerup ? (uint32_t)GPC_LPCR_EN_PUP_MASK : 0UL) |
+                (config->enVirtualPGCPowerdown ? (uint32_t)GPC_LPCR_EN_PDN_MASK : 0UL) |
+                (config->enWfiMask ? (uint32_t)GPC_LPCR_MASK_WFI_MASK : 0UL) |
+                (config->enDsmMask ? (uint32_t)GPC_LPCR_MASK_DSM_TRIGGER_MASK : 0UL);
         slpcr &= ~GPC_SLPCR_EN_FASTWUP_STOP_MODE_MASK;
         slpcr |= config->enFastWakeUp ? GPC_SLPCR_EN_FASTWUP_STOP_MODE_MASK : 0U;
     }
 
     base->SLPCR = slpcr;
     /* STOP mode */
-    base->GPC_LPCR = lpcr | kGPC_StopMode;
+    base->GPC_LPCR = lpcr | (uint32_t)kGPC_StopMode;
 }

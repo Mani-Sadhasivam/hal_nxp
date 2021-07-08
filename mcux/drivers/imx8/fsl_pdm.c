@@ -23,13 +23,6 @@ typedef void (*pdm_isr_t)(PDM_Type *base, pdm_handle_t *pdmHandle);
 /*!
  * @brief Get the instance number for PDM.
  *
- * @param base PDM base pointer.
- */
-uint32_t PDM_GetInstance(PDM_Type *base);
-
-/*!
- * @brief Get the instance number for PDM.
- *
  * @param channelMask enabled channel.
  * @param qualitymode selected quality mode.
  * @param osr      oversample rate.
@@ -46,7 +39,7 @@ static status_t PDM_ValidateSrcClockRate(uint32_t channelMask,
 /* Base pointer array */
 static PDM_Type *const s_pdmBases[] = PDM_BASE_PTRS;
 /*!@brief PDM handle pointer */
-pdm_handle_t *s_pdmHandle[ARRAY_SIZE(s_pdmBases)];
+static pdm_handle_t *s_pdmHandle[ARRAY_SIZE(s_pdmBases)];
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
 /* Clock name array */
 static const clock_ip_name_t s_pdmClock[] = PDM_CLOCKS;
@@ -274,6 +267,7 @@ status_t PDM_SetSampleRate(
             regDiv >>= 2U;
             break;
         default:
+            assert(false);
             break;
     }
 
@@ -833,6 +827,7 @@ void PDM_SetHwvadZeroCrossDetectorConfig(PDM_Type *base, const pdm_hwvad_zero_cr
 }
 
 #if defined(PDM)
+void PDM_EVENT_DriverIRQHandler(void);
 void PDM_EVENT_DriverIRQHandler(void)
 {
     assert(s_pdmHandle[0] != NULL);
@@ -840,6 +835,7 @@ void PDM_EVENT_DriverIRQHandler(void)
     SDK_ISR_EXIT_BARRIER;
 }
 #elif defined(PDM0)
+void PDM_EVENT_DriverIRQHandler(void);
 void PDM_EVENT_DriverIRQHandler(void)
 {
     assert(s_pdmHandle[0]);

@@ -20,8 +20,8 @@
 
 /*! @name Driver version */
 /*@{*/
-/*! @brief UART SDMA driver version 2.1.0. */
-#define FSL_UART_SDMA_DRIVER_VERSION (MAKE_VERSION(2, 1, 0))
+/*! @brief UART SDMA driver version 2.1.1. */
+#define FSL_UART_SDMA_DRIVER_VERSION (MAKE_VERSION(2, 1, 1))
 /*@}*/
 
 /* Forward declaration of the handle typedef. */

@@ -21,8 +21,8 @@
 
 /*! @name Driver version */
 /*@{*/
-/*! @brief ECSPI driver version 2.1.0. */
-#define FSL_ECSPI_DRIVER_VERSION (MAKE_VERSION(2, 1, 0))
+/*! @brief ECSPI driver version. */
+#define FSL_ECSPI_DRIVER_VERSION (MAKE_VERSION(2, 2, 0))
 /*@}*/
 
 #ifndef ECSPI_DUMMYDATA
@@ -141,13 +141,6 @@ typedef enum _ecspi_chip_select_active_state_t
     kECSPI_ChipSelectActiveStateHigh,       /*!< The SS signal line active stays high. */
 } ecspi_chip_select_active_state_t;
 
-/*! @brief ECSPI wave form configuration.*/
-typedef enum _ecspi_wave_form_t
-{
-    kECSPI_WaveFormSingle = 0x0U, /*!< The wave form for signal burst */
-    kECSPI_WaveFormMultiple,      /*!< The wave form for multiple burst */
-} ecspi_wave_form_t;
-
 /*! @brief ECSPI sample period clock configuration.*/
 typedef enum _ecspi_sample_period_clock_source
 {
@@ -162,7 +155,6 @@ typedef struct _ecspi_channel_config
     ecspi_clock_inactive_state_t clockInactiveState;        /*!< Clock line (SCLK) inactive state */
     ecspi_data_line_inactive_state_t dataLineInactiveState; /*!< Data line (MOSI&MISO) inactive state */
     ecspi_chip_select_active_state_t chipSlectActiveState;  /*!< Chip select(SS) line active state */
-    ecspi_wave_form_t waveForm;                             /*!< Wave form */
     ecspi_clock_polarity_t polarity;                        /*!< Clock polarity */
     ecspi_clock_phase_t phase;                              /*!< Clock phase */
 } ecspi_channel_config_t;

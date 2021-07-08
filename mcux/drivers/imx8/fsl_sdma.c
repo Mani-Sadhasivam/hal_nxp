@@ -1021,6 +1021,7 @@ void SDMA_HandleIRQ(sdma_handle_t *handle)
     }
 }
 #if defined(SDMAARM)
+void SDMA_DriverIRQHandler(void);
 void SDMA_DriverIRQHandler(void)
 {
     uint32_t i = 1U, val;
@@ -1042,6 +1043,7 @@ void SDMA_DriverIRQHandler(void)
 }
 #endif
 #if defined(SDMAARM1)
+void SDMA1_DriverIRQHandler(void);
 void SDMA1_DriverIRQHandler(void)
 {
     uint32_t i = 1U, val;
@@ -1063,6 +1065,7 @@ void SDMA1_DriverIRQHandler(void)
 }
 #endif
 #if defined(SDMAARM2)
+void SDMA2_DriverIRQHandler(void);
 void SDMA2_DriverIRQHandler(void)
 {
     uint32_t i = 1U, val;
@@ -1085,6 +1088,7 @@ void SDMA2_DriverIRQHandler(void)
 #endif
 
 #if defined(SDMAARM3)
+void SDMA3_DriverIRQHandler(void);
 void SDMA3_DriverIRQHandler(void)
 {
     uint32_t i = 1U, val;

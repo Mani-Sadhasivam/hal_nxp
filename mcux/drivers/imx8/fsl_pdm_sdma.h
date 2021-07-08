@@ -23,7 +23,7 @@
 
 /*! @name Driver version */
 /*@{*/
-#define FSL_PDM_SDMA_DRIVER_VERSION (MAKE_VERSION(2, 1, 2)) /*!< Version 2.1.2 */
+#define FSL_PDM_SDMA_DRIVER_VERSION (MAKE_VERSION(2, 5, 0)) /*!< Version 2.5.0 */
 /*@}*/
 
 typedef struct _pdm_sdma_handle pdm_sdma_handle_t;

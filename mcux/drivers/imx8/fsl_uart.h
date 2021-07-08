@@ -21,8 +21,8 @@
  ******************************************************************************/
 /*! @name Driver version */
 /*@{*/
-/*! @brief UART driver version 2.1.0. */
-#define FSL_UART_DRIVER_VERSION (MAKE_VERSION(2, 1, 0))
+/*! @brief UART driver version. */
+#define FSL_UART_DRIVER_VERSION (MAKE_VERSION(2, 2, 0))
 /*@}*/
 
 /*! @brief Retry times for waiting flag. */
@@ -127,7 +127,7 @@ enum _uart_interrupt_enable
  *
  * This provides constants for the UART status flags for use in the UART functions.
  */
-enum _uart_flags
+enum
 {
     kUART_RxCharReadyFlag         = 0x0000000FU, /*!< Rx Character Ready Flag. */
     kUART_RxErrorFlag             = 0x0000000EU, /*!< Rx Error Detect Flag. */
@@ -175,9 +175,12 @@ typedef struct _uart_config
     uart_stop_bit_count_t stopBitCount; /*!< Number of stop bits in one frame. */
     uint8_t txFifoWatermark;            /*!< TX FIFO watermark */
     uint8_t rxFifoWatermark;            /*!< RX FIFO watermark */
-    bool enableAutoBaudRate;            /*!< Enable automatic baud rate detection */
-    bool enableTx;                      /*!< Enable TX */
-    bool enableRx;                      /*!< Enable RX */
+    uint8_t rxRTSWatermark; /*!< RX RTS watermark, RX FIFO data count being larger than this triggers RTS deassertion */
+    bool enableAutoBaudRate; /*!< Enable automatic baud rate detection */
+    bool enableTx;           /*!< Enable TX */
+    bool enableRx;           /*!< Enable RX */
+    bool enableRxRTS;        /*!< RX RTS enable */
+    bool enableTxCTS;        /*!< TX CTS enable */
 } uart_config_t;
 
 /*! @brief UART transfer structure. */
@@ -803,8 +806,23 @@ static inline void UART_EnableRxDMA(UART_Type *base, bool enable)
  */
 static inline void UART_SetTxFifoWatermark(UART_Type *base, uint8_t watermark)
 {
-    assert((watermark >= 2U) && (watermark <= FSL_FEATURE_IUART_FIFO_SIZEn(base)));
+    assert((watermark >= 2U) && ((int32_t)watermark <= (int32_t)FSL_FEATURE_IUART_FIFO_SIZEn(base)));
     base->UFCR = (base->UFCR & ~UART_UFCR_TXTL_MASK) | UART_UFCR_TXTL(watermark);
+}
+
+/*!
+ * @brief This function is used to set the watermark of UART RTS deassertion.
+ *
+ * The RTS signal deasserts whenever the data count in RxFIFO reaches the Rx
+ * RTS watermark.
+ *
+ * @param base UART base pointer.
+ * @param watermark The Rx RTS watermark.
+ */
+static inline void UART_SetRxRTSWatermark(UART_Type *base, uint8_t watermark)
+{
+    assert((int32_t)watermark <= (int32_t)FSL_FEATURE_IUART_FIFO_SIZEn(base));
+    base->UCR4 = (base->UCR4 & ~UART_UCR4_CTSTL_MASK) | UART_UCR4_CTSTL(watermark);
 }
 
 /*!
@@ -817,7 +835,7 @@ static inline void UART_SetTxFifoWatermark(UART_Type *base, uint8_t watermark)
  */
 static inline void UART_SetRxFifoWatermark(UART_Type *base, uint8_t watermark)
 {
-    assert(watermark <= FSL_FEATURE_IUART_FIFO_SIZEn(base));
+    assert((int32_t)watermark <= (int32_t)FSL_FEATURE_IUART_FIFO_SIZEn(base));
     base->UFCR = (base->UFCR & ~UART_UFCR_RXTL_MASK) | UART_UFCR_RXTL(watermark);
 }
 

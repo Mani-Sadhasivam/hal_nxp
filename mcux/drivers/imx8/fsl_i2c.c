@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2020 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,7 +46,7 @@ typedef void (*i2c_isr_t)(I2C_Type *base, void *i2cHandle);
  *
  * @param base I2C peripheral base address.
  */
-uint32_t I2C_GetInstance(I2C_Type *base);
+static uint32_t I2C_GetInstance(I2C_Type *base);
 
 /*!
  * @brief Set up master transfer, send slave address and decide the initial
@@ -135,7 +135,7 @@ static i2c_isr_t s_i2cSlaveIsr;
  * Codes
  ******************************************************************************/
 
-uint32_t I2C_GetInstance(I2C_Type *base)
+static uint32_t I2C_GetInstance(I2C_Type *base)
 {
     uint32_t instance;
 
@@ -1739,6 +1739,7 @@ void I2C_SlaveTransferHandleIRQ(I2C_Type *base, void *i2cHandle)
 }
 
 #if defined(I2C1)
+void I2C1_DriverIRQHandler(void);
 void I2C1_DriverIRQHandler(void)
 {
     I2C_TransferCommonIRQHandler(I2C1, s_i2cHandle[1]);
@@ -1746,6 +1747,7 @@ void I2C1_DriverIRQHandler(void)
 #endif
 
 #if defined(I2C2)
+void I2C2_DriverIRQHandler(void);
 void I2C2_DriverIRQHandler(void)
 {
     I2C_TransferCommonIRQHandler(I2C2, s_i2cHandle[2]);
@@ -1753,6 +1755,7 @@ void I2C2_DriverIRQHandler(void)
 #endif
 
 #if defined(I2C3)
+void I2C3_DriverIRQHandler(void);
 void I2C3_DriverIRQHandler(void)
 {
     I2C_TransferCommonIRQHandler(I2C3, s_i2cHandle[3]);
@@ -1760,6 +1763,7 @@ void I2C3_DriverIRQHandler(void)
 #endif
 
 #if defined(I2C4)
+void I2C4_DriverIRQHandler(void);
 void I2C4_DriverIRQHandler(void)
 {
     I2C_TransferCommonIRQHandler(I2C4, s_i2cHandle[4]);
@@ -1767,6 +1771,7 @@ void I2C4_DriverIRQHandler(void)
 #endif
 
 #if defined(I2C5)
+void I2C5_DriverIRQHandler(void);
 void I2C5_DriverIRQHandler(void)
 {
     I2C_TransferCommonIRQHandler(I2C5, s_i2cHandle[5]);
@@ -1774,6 +1779,7 @@ void I2C5_DriverIRQHandler(void)
 #endif
 
 #if defined(I2C6)
+void I2C6_DriverIRQHandler(void);
 void I2C6_DriverIRQHandler(void)
 {
     I2C_TransferCommonIRQHandler(I2C6, s_i2cHandle[6]);

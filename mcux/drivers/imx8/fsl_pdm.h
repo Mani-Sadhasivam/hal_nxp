@@ -22,7 +22,7 @@
 
 /*! @name Driver version */
 /*@{*/
-#define FSL_PDM_DRIVER_VERSION (MAKE_VERSION(2, 4, 1)) /*!< Version 2.4.1 */
+#define FSL_PDM_DRIVER_VERSION (MAKE_VERSION(2, 5, 0)) /*!< Version 2.5.0 */
 /*@}*/
 
 /*! @brief PDM XFER QUEUE SIZE */
@@ -544,6 +544,12 @@ status_t PDM_SetSampleRateConfig(PDM_Type *base, uint32_t sourceClock_HZ, uint32
 status_t PDM_SetSampleRate(
     PDM_Type *base, uint32_t enableChannelMask, pdm_df_quality_mode_t qualityMode, uint8_t osr, uint32_t clkDiv);
 
+/*!
+ * @brief Get the instance number for PDM.
+ *
+ * @param base PDM base pointer.
+ */
+uint32_t PDM_GetInstance(PDM_Type *base);
 /*! @} */
 
 /*!
